@@ -58,7 +58,13 @@ class NewCommand extends Command
             ->addOption('pest', null, InputOption::VALUE_NONE, 'Install the Pest testing framework')
             ->addOption('phpunit', null, InputOption::VALUE_NONE, 'Install the PHPUnit testing framework')
             ->addOption('npm', null, InputOption::VALUE_NONE, 'Install and build NPM dependencies')
-            ->addOption('using', null, InputOption::VALUE_OPTIONAL, 'Install a custom starter kit from a community maintained package')
+            ->addOption(
+                'using',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Install a custom starter kit from a community maintained package',
+                'norman-huth/laravel-starter-kit'
+            )
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Forces install even if the directory already exists');
     }
 
@@ -151,13 +157,13 @@ class NewCommand extends Command
             }
         }
 
-        if (! $input->getOption('phpunit') && ! $input->getOption('pest')) {
-            $input->setOption('pest', select(
-                label: 'Which testing framework do you prefer?',
-                options: ['Pest', 'PHPUnit'],
-                default: 'Pest',
-            ) === 'Pest');
-        }
+        // if (! $input->getOption('phpunit') && ! $input->getOption('pest')) {
+        //     $input->setOption('pest', select(
+        //         label: 'Which testing framework do you prefer?',
+        //         options: ['Pest', 'PHPUnit'],
+        //         default: 'Pest',
+        //     ) === 'Pest');
+        // }
     }
 
     /**
@@ -307,19 +313,19 @@ class NewCommand extends Command
 
             if (! $input->getOption('npm') && $input->isInteractive()) {
                 $runNpm = confirm(
-                    label: 'Would you like to run <options=bold>npm install</> and <options=bold>npm run build</>?'
+                    label: 'Would you like to run <options=bold>pnpm install</> and <options=bold>pnpm run build</>?'
                 );
             }
 
             if ($runNpm) {
-                $this->runCommands(['npm install', 'npm run build'], $input, $output, workingPath: $directory);
+                $this->runCommands(['pnpm install', 'pnpm run build'], $input, $output, workingPath: $directory);
             }
 
             $output->writeln("  <bg=blue;fg=white> INFO </> Application ready in <options=bold>[{$name}]</>. You can start your local development using:".PHP_EOL);
             $output->writeln('<fg=gray>➜</> <options=bold>cd '.$name.'</>');
 
             if (! $runNpm) {
-                $output->writeln('<fg=gray>➜</> <options=bold>npm install && npm run build</>');
+                $output->writeln('<fg=gray>➜</> <options=bold>pnpm install && pnpm run build</>');
             }
 
             if ($this->isParkedOnHerdOrValet($directory)) {
@@ -329,8 +335,8 @@ class NewCommand extends Command
                 $output->writeln('<fg=gray>➜</> <options=bold>composer run dev</>');
             }
 
-            $output->writeln('');
-            $output->writeln('  New to Laravel? Check out our <href=https://laravel.com/docs/installation#next-steps>documentation</>. <options=bold>Build something amazing!</>');
+            // $output->writeln('');
+            // $output->writeln('  New to Laravel? Check out our <href=https://laravel.com/docs/installation#next-steps>documentation</>. <options=bold>Build something amazing!</>');
             $output->writeln('');
         }
 
@@ -715,7 +721,7 @@ class NewCommand extends Command
             if (windows_os()) {
                 $content['scripts']['dev'] = [
                     'Composer\\Config::disableProcessTimeout',
-                    "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'",
+                    "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"pnpm run dev\" --names='server,queue,vite'",
                 ];
             }
 
