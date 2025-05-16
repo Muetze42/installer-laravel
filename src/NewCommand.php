@@ -58,13 +58,7 @@ class NewCommand extends Command
             ->addOption('pest', null, InputOption::VALUE_NONE, 'Install the Pest testing framework')
             ->addOption('phpunit', null, InputOption::VALUE_NONE, 'Install the PHPUnit testing framework')
             ->addOption('npm', null, InputOption::VALUE_NONE, 'Install and build NPM dependencies')
-            ->addOption(
-                'using',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Install a custom starter kit from a community maintained package',
-                'norman-huth/laravel-starter-kit'
-            )
+            ->addOption('using', null, InputOption::VALUE_OPTIONAL, 'Install a custom starter kit from a community maintained package')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Forces install even if the directory already exists');
     }
 
@@ -89,6 +83,13 @@ class NewCommand extends Command
   |______\__,_|_|  \__,_| \_/ \___|_|</>'.PHP_EOL.PHP_EOL);
 
         $this->ensureExtensionsAreAvailable($input, $output);
+
+        if (
+            ! $input->getOption('using') &&
+            confirm(':) Would you like to use norman-huth/laravel-starter-kit?')
+        ) {
+            $input->setOption('using', 'norman-huth/laravel-starter-kit');
+        }
 
         if (! $input->getArgument('name')) {
             $input->setArgument('name', text(
