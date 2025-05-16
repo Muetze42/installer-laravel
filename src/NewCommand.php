@@ -28,7 +28,7 @@ class NewCommand extends Command
         parent::ensureExtensionsAreAvailable($input, $output);
 
         if (
-            ! $input->getOption('using') &&
+            ! $this->usingStarterKit($input) &&
             confirm(':) Would you like to use norman-huth/laravel-starter-kit?')
         ) {
             $input->setOption('using', 'norman-huth/laravel-starter-kit');
