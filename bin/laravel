@@ -8,6 +8,6 @@ if (file_exists(__DIR__.'/../../../autoload.php')) {
 }
 
 $app = new Symfony\Component\Console\Application('Laravel Installer', '5.14.2');
-$app->add(new Laravel\Installer\Console\NewCommand);
+$app->add(new NormanHuth\Installer\Console\NewCommand);
 
 $app->run();
