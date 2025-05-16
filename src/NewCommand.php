@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use function Laravel\Prompts\confirm;
 
-#[AsCommand(name: 'auth:clear-resets')]
+#[AsCommand(name: 'new')]
 class NewCommand extends Command
 {
     /**
